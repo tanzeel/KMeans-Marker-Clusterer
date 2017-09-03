@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Marker Clustering</title>
+        {% load staticfiles %}
+        <link href="{% static 'clust/css/index-style.css' %}"  rel="stylesheet">
+        <script src="{% static 'homepage/js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'clust/js/index.js' %}"></script>
+        <script src="{% static 'clust/js/mclusterer.js' %}"></script>
+        <script src="{% static 'clust/js/data.js' %}"></script>
+
+    </head>
+    <body>
+        <main>
+            <div id="map-area"></div>
+
+            <script type="text/javascript">
+                function initMap() {
+                    map = new google.maps.Map(document.getElementById('map-area'), {
+                        center: {lat: 53.296704, lng: -6.183750},
+                        zoom: 13,
+                        gestureHandling: 'cooperative',
+                        scrollwheel: false
+                    });
+
+                    markerCluster = new MarkerClusterer(map, current_markers, {
+                        imagePath: '{% static "clust/media/m" %}',
+                        zoomOnClick: false,
+                        url: "2",
+                        averageCenter: true
+                    });
+
+                    google.maps.event.addListener(map, 'dragend', function () {
+                        ajax_update_markers();
+                    });
+
+                    google.maps.event.addListener(map, 'zoom_changed', function () {
+                        ajax_update_markers();
+                    });
+
+                }
+            </script>
+
+            <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXosjHZchd8S-A7xEes69FhCX18rqJHUw&callback=initMap">
+            </script>
+        </main>
+    </body>
+</html>
